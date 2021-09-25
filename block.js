@@ -2,11 +2,13 @@ const { GENESIS_DATA } = require('./config');
 const cryptoHash = require('./crypto-hash');
 
 class Block {
-    constructor({ timestamp, lastHash, hash, data }) {
-        this.timestamp = timestamp;
-        this.lastHash  = lastHash;
-        this.hash      = hash;
-        this.data      = data;
+    constructor({ timestamp, lastHash, hash, data, nonce, difficulty }) {
+        this.timestamp  = timestamp;
+        this.lastHash   = lastHash;
+        this.hash       = hash;
+        this.data       = data;
+        this.nonce      = nonce;
+        this.difficulty = difficulty;
     }
 
     static genesis() {
@@ -14,15 +16,21 @@ class Block {
     }
 
     static mineBlock({ lastBlock, data }) {
-        const timestamp = Date.now();
-        const lastHash  = lastBlock.hash;
+        let hash, timestamp;
+        //const timestamp      = Date.now();
+        const lastHash       = lastBlock.hash;
+        const { difficulty } = lastBlock;
+        let nonce = 0;
+
+        do { // Proof of work
+
+            nonce++;
+            timestamp = Date.now();
+            hash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
+
+        } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
         
-        return new this({
-            timestamp,
-            lastHash,
-            data,
-            hash: cryptoHash(timestamp, lastHash, data)
-        });
+        return new this({ timestamp, lastHash, data, difficulty, nonce, hash });
     }
 }
 
