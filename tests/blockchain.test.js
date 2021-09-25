@@ -1,6 +1,5 @@
 const Blockchain = require('../blockchain');
 const Block = require('../block');
-const { it, describe } = require('@jest/globals');
 
 describe('Blockchain', () => {
     let blockchain, newChain, originalChain;
