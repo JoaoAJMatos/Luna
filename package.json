@@ -1,0 +1,22 @@
+{
+  "name": "luna",
+  "version": "0.0.1",
+  "description": "",
+  "main": "block.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoaoAJMatos/Luna.git"
+  },
+  "author": "Joao Matos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoaoAJMatos/Luna/issues"
+  },
+  "homepage": "https://github.com/JoaoAJMatos/Luna#readme",
+  "devDependencies": {
+    "jest": "^27.2.1"
+  }
+}
