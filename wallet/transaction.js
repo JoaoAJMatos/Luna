@@ -28,6 +28,16 @@ class Transaction {
         };
     }
 
+    // Updates transactions and re-signs them
+    update({ senderWallet, recipient, amount }) {
+        this.outputMap[recipient] = amount;
+
+        this.outputMap[senderWallet.publicKey] = this.outputMap[senderWallet.publicKey] - amount;
+    
+        // Use sign method inside createInput() to sign updated transaction
+        this.input = this.createInput({ senderWallet, outputMap: this.outputMap });
+    }
+
     // Validate transactions
     static validTransaction(transaction) {
         const { input: { address, amount, signature }, outputMap } = transaction;
