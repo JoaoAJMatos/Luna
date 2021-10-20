@@ -1,3 +1,4 @@
+// Luna - API
 const bodyParser       = require('body-parser');
 const express          = require('express');
 const request          = require('request');
@@ -92,7 +93,7 @@ const syncWithRootState = () => { // Sync chains on startup
 
 let PEER_PORT;
 
-if (process.env.GENERATE_PEER_PORT === 'true') {
+if (process.env.GENERATE_PEER_PORT === 'true') { // Choose random port if default is already taken
     PEER_PORT = DEFAULT_PORT + Math.ceil(Math.random() * 1000);
 }
 
