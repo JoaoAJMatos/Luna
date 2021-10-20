@@ -9,6 +9,7 @@ Supported releases:
 | Version | Supported          |
 | ------- | :----------------: |
 | 0.7 Alpha   | :white_check_mark: |
+| 0.8 Alpha   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
