@@ -1,7 +1,7 @@
 # Luna
 A blockchain implementation with it's own cryptocurrency and a fully developed API
 
-## Try Luna (0.7 Alpha)
+## Try Luna (0.8 Alpha)
 In order to run Luna and experiment with the service in it's early stages of development all you need to do is __clone__ the repo or [download](https://github.com/JoaoAJMatos/Luna/archive/refs/tags/0.7-alpha.zip) the latest stable release.
 
 > To clone the repo: `git clone https://github.com/JoaoAJMatos/Luna.git`
