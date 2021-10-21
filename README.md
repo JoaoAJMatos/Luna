@@ -16,6 +16,8 @@ You can now interact with the service by sending http requests to the API.
 
 All the available endpoints can be found [here](https://github.com/JoaoAJMatos/Luna/blob/main/index.js).
 
-##
-
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
+
+## Is Luna safe?
+
+The answer can be found here: 
