@@ -20,4 +20,4 @@ If you encounter a bug, please follow the security procedures stated in the [sec
 
 ## Is Luna safe?
 
-The answer can be found in the [wiki](https://github.com/JoaoAJMatos/Luna/wiki).
+Luna is rubust and (mostly) safe. You can find more information on that in the [wiki](https://github.com/JoaoAJMatos/Luna/wiki).
