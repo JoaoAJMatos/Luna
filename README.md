@@ -18,6 +18,6 @@ All the available endpoints can be found [here](https://github.com/JoaoAJMatos/L
 
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
 
-## Is Luna safe?
+## Is it safe to use Luna?
 
 Luna is rubust and (mostly) safe. You can find more information on that in the [wiki](https://github.com/JoaoAJMatos/Luna/wiki).
