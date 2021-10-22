@@ -91,6 +91,16 @@ const syncWithRootState = () => { // Sync chains on startup
     });
 };
 
+// Get wallet info - Address and Balance
+app.get('/api/wallet-info', (req, res) => {
+    const address = wallet.publicKey;
+
+    res.json({ 
+        address: address,
+        balance: Wallet.calculateBalance({ chain: blockchain.chain, address: address })
+    });
+});
+
 let PEER_PORT;
 
 if (process.env.GENERATE_PEER_PORT === 'true') { // Choose random port if default is already taken
