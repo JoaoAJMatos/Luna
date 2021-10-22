@@ -14,7 +14,7 @@ To run Luna, you can start up the root node by executing `npm run dev` in the ro
 
 You can now interact with the service by sending http requests to the API. 
 
-All the available endpoints can be found [here](https://github.com/JoaoAJMatos/Luna/blob/main/index.js).
+All the available endpoints can be found [here](https://github.com/JoaoAJMatos/Luna/blob/main/endpoints.md).
 
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
 
