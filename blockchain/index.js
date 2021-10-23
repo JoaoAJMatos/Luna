@@ -1,5 +1,6 @@
 const Block = require('./block');
 const Transaction = require('../wallet/transaction');
+const Wallet = require('../wallet');
 const { cryptoHash } = require('../util');
 const { REWARD_INPUT, MINING_REWARD } = require('../config');
 
@@ -55,6 +56,16 @@ class Blockchain {
                 } else { // If the transaction is not a reward transaction:
                     if (!Transaction.validTransaction(transaction)) { // Return false if transaction is invalid
                         console.error('[-] Invalid transaction');
+                        return false;
+                    }
+
+                    const trueBalance = Wallet.calculateBalance({
+                        chain: this.chain,
+                        address: transaction.input.address
+                    });
+
+                    if (transaction.input.amount !== trueBalance) { // If the attacker is trying to fake their balance, return false
+                        console.error('[-] Invalid input amount');
                         return false;
                     }
                 }
