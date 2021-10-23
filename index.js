@@ -2,6 +2,7 @@
 const bodyParser       = require('body-parser');
 const express          = require('express');
 const request          = require('request');
+const path             = require('path');
 const Blockchain       = require('./blockchain');
 const PubSub           = require('./app/pubsub');
 const TransactionPool  = require('./wallet/transaction-pool');
@@ -71,6 +72,20 @@ app.get('/api/mine-transactions', (req, res) => {
     res.redirect('/api/blocks');
 });
 
+// Get wallet info - Address and Balance
+app.get('/api/wallet-info', (req, res) => {
+    const address = wallet.publicKey;
+
+    res.json({ 
+        address: address,
+        balance: Wallet.calculateBalance({ chain: blockchain.chain, address: address })
+    });
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './client/index.html'));
+});
+
 const syncWithRootState = () => { // Sync chains on startup
     request({ url: `${ROOT_NODE_ADDRESS}/api/blocks` }, (error, res, body) => {
         if (!error && res.statusCode === 200) {
@@ -90,16 +105,6 @@ const syncWithRootState = () => { // Sync chains on startup
         }
     });
 };
-
-// Get wallet info - Address and Balance
-app.get('/api/wallet-info', (req, res) => {
-    const address = wallet.publicKey;
-
-    res.json({ 
-        address: address,
-        balance: Wallet.calculateBalance({ chain: blockchain.chain, address: address })
-    });
-});
 
 let PEER_PORT;
 
