@@ -153,6 +153,19 @@ describe('Blockchain', () => {
                 });
             });
         });
+
+        describe('and the `validateTransactions` flag is set to true', () => {
+            it('calls validTransactionData()', () => {
+                const validTransactionDataMock = jest.fn();
+
+                blockchain.validTransactionData = validTransactionDataMock;
+
+                newChain.addBlock({ data: 'foo' }); // Add random block so that the chain is longer
+                blockchain.replaceChain(newChain.chain, true);
+                
+                expect(validTransactionDataMock).toHaveBeenCalled();
+            });
+        });
     });
 
     describe('validTransactionData()', () => {
