@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
+import App from './components/App';
 
 render(
-    <div>Welcome to Luna... Live 3</div>, 
+    <App/>, 
     document.getElementById('root')
 );
