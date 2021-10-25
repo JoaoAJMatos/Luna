@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Currently up-to-date version of the project: `0.7 Alpha`
+Currently up-to-date version of the project: `0.8 Alpha`
 
 Supported releases:
 
