@@ -22,6 +22,13 @@ In order to mine the blocks you can fire up the `dedicated-miner` using the foll
 
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
 
+## Requirements
+
+| Requirement | Version            |
+|-------------|--------------------|
+| [Node](https://nodejs.org/en/)        | 12.22.5 (or above) |
+| [Python](https://www.python.org/)      | 3.0.0 (or above)   |
+
 ## Is it safe to use Luna?
 
 Luna is rubust and (mostly) safe. You can find more information on that in the [wiki](https://github.com/JoaoAJMatos/Luna/wiki).
