@@ -28,6 +28,7 @@ If you encounter a bug, please follow the security procedures stated in the [sec
 |-------------|--------------------|
 | [Node](https://nodejs.org/en/)        | 12.22.5 (or above) |
 | [Python](https://www.python.org/)      | 3.0.0 (or above)   |
+| [Redis-Server](https://redis.io/) | 6.0.15 (or above)
 
 ## Is it safe to use Luna?
 
