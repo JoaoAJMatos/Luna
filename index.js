@@ -71,7 +71,7 @@ app.get('/api/mine-transactions', (req, res) => {
     res.redirect('/api/blocks');
 });
 
-const syncWithRootState = () => { // Sync chains on startup
+const syncWithRootState = () => { // Sync chains & transaction pool on startup
     request({ url: `${ROOT_NODE_ADDRESS}/api/blocks` }, (error, res, body) => {
         if (!error && res.statusCode === 200) {
             const rootChain = JSON.parse(body);
@@ -110,6 +110,8 @@ if (process.env.GENERATE_PEER_PORT === 'true') { // Choose random port if defaul
 const PORT = PEER_PORT || DEFAULT_PORT;
 app.listen(PORT, () => {
     console.log(`Listening at localhost:${PORT}`);
+    console.log(`Your Wallet-ID: ${wallet.id}`);
+    console.log(`Your Wallet Address: ${wallet.publicKey}`);
 
     if (PORT !== DEFAULT_PORT) {
         syncWithRootState();

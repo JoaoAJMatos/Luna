@@ -1,12 +1,15 @@
 const Transaction = require('./transaction');
 const { STARTING_BALANCE } = require('../config');
 const { ec, cryptoHash } = require('../util');
+const uuid = require('uuid/v1');
 
 class Wallet {
     constructor() {
+        this.keyPair = ec.genKeyPair();
+
         this.balance = STARTING_BALANCE;
 
-        this.keyPair = ec.genKeyPair();
+        this.id = uuid();
 
         this.publicKey = this.keyPair.getPublic().encode('hex');
     }
