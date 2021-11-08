@@ -16,6 +16,10 @@ You can now interact with the service by sending http requests to the API.
 
 All the available endpoints can be found [here](https://github.com/JoaoAJMatos/Luna/blob/main/endpoints.md).
 
+In order to mine the blocks you can fire up the `dedicated-miner` using the following command: `python dedicated-miner.py`. This script will automate the mining process.
+
+> :warning: Attention: You must change the [API URLs](https://github.com/JoaoAJMatos/Luna/blob/cb3fe71badf79ded89dd4d4a7d742a49851231c7/dedicated-miner.py) according to the port your node is running on :warning:
+
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
 
 ## Is it safe to use Luna?
