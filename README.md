@@ -18,7 +18,7 @@ All the available endpoints can be found [here](https://github.com/JoaoAJMatos/L
 
 In order to mine the blocks you can fire up the `dedicated-miner` using the following command: `python dedicated-miner.py`. This script will automate the mining process.
 
-> :warning: Attention: You must change the [API URLs](https://github.com/JoaoAJMatos/Luna/blob/cb3fe71badf79ded89dd4d4a7d742a49851231c7/dedicated-miner.py#L8-L9) according to the port your node is running on (default port: 3000) :warning:
+> :warning: Attention: You must change the [API URLs](https://github.com/JoaoAJMatos/Luna/blob/fce4ca1e49e786e58280b6382045fe577f87c65d/dedicated-miner.py#L9-L10) according to the port your node is running on (default port: 3000) :warning:
 
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
 
