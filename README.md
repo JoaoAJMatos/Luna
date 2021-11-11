@@ -20,6 +20,8 @@ In order to mine the blocks you can fire up the `dedicated-miner` using the foll
 
 > :warning: Attention: You must change the [API URLs](https://github.com/JoaoAJMatos/Luna/blob/fce4ca1e49e786e58280b6382045fe577f87c65d/dedicated-miner.py#L9-L10) according to the port your node is running on (default port: 3000) :warning:
 
+The root node will check for the latest blockchain instance inside the `/blockchain_backups/blockchain.json` file on start-up. This file is included in the gitignore, therefore you will have to add it yourself. Create the file by adding the following directory in the root folder of the project: `/blockchain_backups`. Inside it you will create the file `blockchain.json` where you will paste the [GENESIS block data](https://gist.github.com/JoaoAJMatos/111dc0aeb10f784c9a8921cf474b2218) as JSON
+
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
 
 ## Requirements
