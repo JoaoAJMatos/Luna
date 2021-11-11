@@ -148,7 +148,7 @@ if (process.env.GENERATE_PEER_PORT === 'true') { // Choose random port if defaul
 
 const PORT = PEER_PORT || DEFAULT_PORT; 
 
-const PATH = `./blockchains/blockchain.json`
+const PATH = `./blockchains_backup/blockchain.json`
 
 app.listen(PORT, () => {
     console.log(`Listening at localhost:${PORT}`);
