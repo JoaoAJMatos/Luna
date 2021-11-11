@@ -10,6 +10,8 @@ After that, you must install the necessary dependencies using: `npm i dependenci
 
 ##
 
+### Run Luna
+
 To run Luna, you can start up the root node by executing `npm run dev` in the root folder of the project. Although optional, you can add different nodes to the network by executing `npm run dev-peer`.
 
 You can now interact with the service by sending http requests to the API. 
@@ -25,6 +27,8 @@ In order to mine the blocks you can fire up the `dedicated-miner` using the foll
 The root node will check for the latest blockchain instance inside the `/blockchain_backups/blockchain.json` file on start-up. This file is included in the gitignore, therefore you will have to add it yourself. Create the file by adding the following directory in the root folder of the project: `/blockchain_backups`. Inside it you will create the file `blockchain.json` where you will paste the [GENESIS block data](https://gist.github.com/JoaoAJMatos/111dc0aeb10f784c9a8921cf474b2218) as JSON
 
 ##
+
+### Bug report
 
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
 
