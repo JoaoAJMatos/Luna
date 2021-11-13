@@ -158,6 +158,7 @@ app.listen(PORT, () => {
     if (PORT !== DEFAULT_PORT) {
         syncWithRootState();
     } else {
+        // If I am the root node, fetch the latest blockchain version
         fetchBlockchainJSON();
     }
 });
