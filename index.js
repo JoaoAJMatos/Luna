@@ -1,4 +1,27 @@
-// Luna - API
+/***********************************************************************************
+* MIT License | Luna                                                               *
+*                                                                                  *
+* Copyright (c) 2021 João Matos                                                    *
+*                                                                                  *
+* Permission is hereby granted, free of charge, to any person obtaining a copy     *
+* of this software and associated documentation files (the "Software"), to deal    *
+* in the Software without restriction, including without limitation the rights     *
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell        *
+* copies of the Software, and to permit persons to whom the Software is            *
+* furnished to do so, subject to the following conditions:                         *
+*                                                                                  *
+* The above copyright notice and this permission notice shall be included in all   *
+* copies or substantial portions of the Software.                                  *
+*                                                                                  *
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR       *
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,         *
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE      *
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER           *
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,    *
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    *
+* SOFTWARE.                                                                        *
+***********************************************************************************/ 
+
 const bodyParser       = require('body-parser');
 const express          = require('express');
 const request          = require('request');
@@ -24,56 +47,63 @@ const getLastModify = require('./util/get-last-modify');
 app.use(bodyParser.json());
 
 // Returns the blockchain data as JSON
-app.get('/api/blocks', (req, res) => {
-    res.json(blockchain.chain);
+app.get('/api/blocks', (req, res) => {      // [/api/blocks]
+    res.json(blockchain.chain);             // Shows te current state of the blockchain
 });
 
 // Mine blocks in the transaction pool
-app.post('/api/mine', (req, res) => {
-    const { data } = req.body;
-
-    blockchain.addBlock({ data });
-
-    pubsub.broadcastChain();
-
-    res.redirect('/api/blocks');
+app.post('/api/mine', (req, res) => {       // [/api/mine] => mines a single block (used for testing)
+    const { data } = req.body;              // 
+                                            // Takes 1 parameter: block `data` 
+    blockchain.addBlock({ data });          // Adds a new block to the chain
+                                            // 
+    pubsub.broadcastChain();                // Broadcasts the updated chain
+                                            //
+    res.redirect('/api/blocks');            // Redirects to [/api/blocks] => shows the updated blockchain
 });
 
 // Conduct a transaction
-app.post('/api/transact', (req, res) => {
-    const { amount, recipient } = req.body;
-
-    let transaction = transactionPool.existingTransaction({ inputAddress: wallet.publicKey });
- 
-    try {
-        if (transaction) {
-            transaction.update({ senderWallet: wallet, recipient, amount });
-        } else {
-            transaction = wallet.createTransaction({ recipient, amount, chain: blockchain.chain });
+app.post('/api/transact', (req, res) => {                                                               // [/api/transact] => Conduct a transaction
+    const { amount, recipient } = req.body;                                                             // 
+                                                                                                        // The request takes 2 parameters: the `amount` and the `recipient`
+    let transaction = transactionPool.existingTransaction({ inputAddress: wallet.publicKey });          //
+                                                                                                        // Try to create a new transaction:
+    try {                                                                                               // 
+        if (transaction) {                                                                              // If a transaction with the same input address already exists:
+            transaction.update({ senderWallet: wallet, recipient, amount });                            //      - Update the amount of the transaction
+        } else {                                                                                        // If the input address is unique in the pool:
+            transaction = wallet.createTransaction({ recipient, amount, chain: blockchain.chain });     //      - Create a new transaction
         }
     }  catch(error) {
         return res.status(400).json({ type: 'error', message: error.message });
     } 
 
-    transactionPool.setTransaction(transaction);
-
-    pubsub.broadcastTransaction(transaction);
-
-    res.json({ type: 'success', transaction });
+    transactionPool.setTransaction(transaction);        // Add transaction to the transaction pool
+                                                        // 
+    pubsub.broadcastTransaction(transaction);           // Broadcast the transaction
+                         
+    res.json({ type: 'success', transaction });        
 });
 
-// Get transaction pull map
-app.get('/api/transaction-pool-map', (req, res) => {
+// Get transaction pool map
+app.get('/api/transaction-pool-map', (req, res) => {        // [/api/transaction-pool-map] => shows the current state of the transaction pool
     res.json(transactionPool.transactionMap);
 });
 
 // Mine transactions
-app.get('/api/mine-transactions', (req, res) => {
+app.get('/api/mine-transactions', (req, res) => {       // [/api/mine-transactions] => mines every transaction contained inside the transction pool
     transactionMiner.mineTransactions();
 
     res.redirect('/api/blocks');
 });
 
+// =====================
+
+// When started, the root node will look for the latest stored blockchain version inside the filesystem
+//  - If it finds one, validate the blocks inside it and replace the current state of the blockchain
+//  - If it doesn't find a blockchain file, the root node will wait for incoming connections in order to update it's blockchain state
+
+// =====================
 const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
     let blockchainJSON = [] // Define an empty array to put the blocks in as the `isValidChain` takes an array as arggument
 
@@ -148,14 +178,14 @@ if (process.env.GENERATE_PEER_PORT === 'true') { // Choose random port if defaul
 
 const PORT = PEER_PORT || DEFAULT_PORT; 
 
-const PATH = `./blockchains_backup/blockchain.json`
+const PATH = `./blockchains_backup/blockchain.json` // Path to blockchain file
 
 app.listen(PORT, () => {
     console.log(`Listening at localhost:${PORT}`);
     console.log(`Your Wallet-ID: ${wallet.id}`);
     console.log(`Your Wallet Address: ${wallet.publicKey}`);
 
-    if (PORT !== DEFAULT_PORT) {
+    if (PORT !== DEFAULT_PORT) { // If I am peer node, sync the state with the root node
         syncWithRootState();
     } else {
         // If I am the root node, fetch the latest blockchain version
