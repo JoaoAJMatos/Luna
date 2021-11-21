@@ -12,7 +12,7 @@ After that, you must install the necessary dependencies using: `npm i dependenci
 
 ### Run Luna
 
-To run Luna, you can start up the root node by executing `npm run dev` in the root folder of the project. Although optional, you can add different nodes to the network by executing `npm run dev-peer`.
+To run Luna, you can start up the root node by executing `npm run dev` (or `npm run dev-windows` if you are on Windows) in the root folder of the project. Although optional, you can add different nodes to the network by executing `npm run dev-peer`.
 
 #### Take into consideration:
 
