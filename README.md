@@ -10,7 +10,7 @@ After that, you must install the necessary dependencies using: `npm i dependenci
 
 ##
 
-### Run Luna
+### Run Luna ([requirements]())
 
 To run Luna, you can start up the root node by executing `npm run dev` (or `npm run dev-windows` if you are on Windows) in the root folder of the project. Although optional, you can add different nodes to the network by executing `npm run dev-peer`.
 
@@ -31,14 +31,6 @@ In order to mine the blocks you can fire up the `dedicated-miner` using the foll
 ### Bug report
 
 If you encounter a bug, please follow the security procedures stated in the [security policy](https://github.com/JoaoAJMatos/Luna/blob/main/SECURITY.md) file.
-
-## Requirements
-
-| Requirement | Version            |
-|-------------|--------------------|
-| [Node](https://nodejs.org/en/)        | 12.22.5 (or above) |
-| [Python](https://www.python.org/)      | 3.0.0 (or above)   |
-| [Redis-Server](https://redis.io/) | 6.0.15 (or above)
 
 ## Is it safe to use Luna?
 
