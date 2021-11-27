@@ -91,7 +91,7 @@ app.get('/api/transaction-pool-map', (req, res) => {        // [/api/transaction
 });
 
 // Mine transactions
-app.get('/api/mine-transactions', (req, res) => {       // [/api/mine-transactions] => mines every transaction contained inside the transction pool
+app.get('/api/mine-transactions', (req, res) => {       // [/api/mine-transactions] => mines every transaction contained inside the transaction pool
     transactionMiner.mineTransactions();
 
     res.redirect('/api/blocks');
@@ -105,7 +105,7 @@ app.get('/api/mine-transactions', (req, res) => {       // [/api/mine-transactio
 
 // =====================
 const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
-    let blockchainJSON = [] // Define an empty array to put the blocks in as the `isValidChain` takes an array as arggument
+    let blockchainJSON = [] // Define an empty array to put the blocks in as the `isValidChain` takes an array as argument
 
     try{
         if(fs.existsSync(PATH)) {
@@ -125,7 +125,7 @@ const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
 
                     blockchainJSON.push(JSON.parse(jsonString));
                     blockchain.replaceChain(blockchainJSON);
-                    console.log(`\n[+] Successfuly updated the blockchain instance.`);
+                    console.log(`\n[+] Successfully updated the blockchain instance.`);
                     console.log(`\n[+] Instance retrieved from '${PATH}'.\n[+] Last write: ${getLastModify(PATH)}`);
                 }
             });
@@ -133,9 +133,9 @@ const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
             console.error('\n[ERR] Blockchain file does not exist');
         }
     } catch{
-        console.error('\n[ERR] An error has occured when fetching the last stored blockchain version');
+        console.error('\n[ERR] An error has occurred when fetching the last stored blockchain version');
     }
-};
+}; 
 
 const syncWithRootState = () => { // Sync chains & transaction pool on startup
     request({ url: `${ROOT_NODE_ADDRESS}/api/blocks` }, (error, res, body) => {
