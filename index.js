@@ -44,6 +44,9 @@ const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`
 const fs = require('fs'); // Import filesystem module
 const getLastModify = require('./util/get-last-modify');
 
+const clc = require('cli-color');
+
+
 app.use(bodyParser.json());
 
 // Returns the blockchain data as JSON
@@ -110,7 +113,8 @@ const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
     try{
         if(fs.existsSync(PATH)) {
             fs.readFile(PATH, 'utf8', (err, jsonString) => {
-                console.log(`\n[+] Found latest blockchain version in '${PATH}'. Attempting to replace chain\n`);
+                console.log(`\n[+] Found latest blockchain version in '${PATH}'.`);
+                console.log('     [+] Attempting to replace chain: \n');
 
                 if(err) {
                     console.error('\n[ERR] Unable to open file for reading')
@@ -118,15 +122,15 @@ const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
                 }
 
                 if(jsonString.length = 0) { // Check iff the file is not empty
-                    console.log(`[-] Failed to fetch latest blockchain instance from '${PATH}'. The file is empty.`);
+                    console.log(`[+] Failed to fetch latest blockchain instance from '${PATH}'. The file is empty.`);
                     return;
 
                 } else { // If the file is not empty, attempt to fetch the blockchain data and replace the current state of the chain
 
                     blockchainJSON.push(JSON.parse(jsonString));
                     blockchain.replaceChain(blockchainJSON);
-                    console.log(`\n[+] Successfully updated the blockchain instance.`);
-                    console.log(`\n[+] Instance retrieved from '${PATH}'.\n[+] Last write: ${getLastModify(PATH)}`);
+                    console.log(clc.blue(`     [+] Successfully updated the blockchain instance.`));
+                    console.log(`\n[+] Instance retrieved from '${clc.blue(PATH)}'.\n[+] Last write: ${clc.yellow(getLastModify(PATH))}`);
                 }
             });
         } else {
@@ -145,7 +149,8 @@ const syncWithRootState = () => { // Sync chains & transaction pool on startup
             console.log('\n[+] Replacing chain on sync with', rootChain);
             blockchain.replaceChain(rootChain);
         } else {
-            console.log('\n[-] Error fetching the latest blockchain version from the root node. The node may be down. Attempting to fetch latest stored blockchain version.')
+            console.log(`\n[${clc.bgRed("ERR")}] Error fetching the latest blockchain version from the root node (${clc.yellow("the node may be down")})`); 
+            console.log('[+] Attempting to fetch latest stored blockchain version.')
             fetchBlockchainJSON()
         }
     });
@@ -180,10 +185,27 @@ const PORT = PEER_PORT || DEFAULT_PORT;
 
 const PATH = `./blockchains_backup/blockchain.json` // Path to blockchain file
 
+process.stdout.write('\033c'); // Clear screen
+console.log("======================================");
+console.log("|" + clc.blue("         LUNA v0.9.0-alpha          ") + "|");
+console.log("======================================");
+
 app.listen(PORT, () => {
-    console.log(`Listening at localhost:${PORT}`);
-    console.log(`Your Wallet-ID: ${wallet.id}`);
-    console.log(`Your Wallet Address: ${wallet.publicKey}`);
+    console.log(clc.blue("\n\n=> Node Info"))
+    console.log("======================================");
+
+    console.log(`[+] Listening at localhost:${clc.blue(PORT)} (127.0.0.1:${clc.blue(PORT)})`);
+
+    console.log(clc.blue("\n=> Wallet Info"));
+
+    console.log("======================================");
+
+    console.log(`[+] Your Wallet-ID: ${clc.blue(wallet.id)}`);
+    console.log(`[+] Your Wallet Address: ${clc.blue(wallet.publicKey)}`);
+
+    console.log(clc.blue("\n=> Node Log"));
+
+    console.log("======================================");
 
     if (PORT !== DEFAULT_PORT) { // If I am peer node, sync the state with the root node
         syncWithRootState();

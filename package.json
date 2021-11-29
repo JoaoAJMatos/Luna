@@ -10,7 +10,7 @@
     "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon index.js",
     "start-redis": "redis-server --daemonize yes",
     "dev-windows": "npm run nodemon",
-    "nodemon": "nodemon inde.js"
+    "nodemon": "nodemon index.js"
   },
   "jest": {
     "testEnvironment": "node"
@@ -32,6 +32,8 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "chalk": "^5.0.0",
+    "cli-color": "^2.0.1",
     "dependencies": "^0.0.1",
     "dev-dependencies": "^1.0.0",
     "elliptic": "^6.5.4",

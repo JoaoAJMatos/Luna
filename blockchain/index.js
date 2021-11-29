@@ -21,17 +21,17 @@ class Blockchain {
     // Replace current chain by the incoming chain
     replaceChain(chain, validateTransactions, onSuccess) {
         if (chain.length <= this.chain.length) { // Check is chain is longer
-            console.error('[-] The incoming chain must be longer');
+            console.error('     [+] The incoming chain must be longer');
             return;
         }
 
         if (!Blockchain.isValidChain(chain)) { // Validate Blocks
-            console.error('[-] The incoming chain must be valid');
+            console.error('     [+] The incoming chain must be valid');
             return;
         }
 
         if (validateTransactions && !this.validTransactionData({ chain })) { // Validate Data inside blocks
-            console.error('[-] The incoming chain has invalid transaction data');
+            console.error('     [+] The incoming chain has invalid transaction data');
             return;
         }
 
