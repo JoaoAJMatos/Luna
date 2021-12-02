@@ -16,7 +16,7 @@ To run Luna, you can start up the root node by executing `npm run dev` (or `npm 
 
 #### Take into consideration:
 
-The root node will check for the latest blockchain instance inside the `/blockchain_backups/blockchain.json` file on start-up. This file is included in the gitignore, therefore you will have to add it yourself. Create the file by adding the following directory in the root folder of the project: `/blockchain_backups`. Inside it you will create the file `blockchain.json` where you will paste the [GENESIS block data](https://gist.github.com/JoaoAJMatos/111dc0aeb10f784c9a8921cf474b2218) as JSON
+The root node will check for the latest blockchain instance inside the `/blockchains_backup/blockchain.json` file on start-up. This file is included in the gitignore, therefore you will have to add it yourself. Create the file by adding the following directory in the root folder of the project: `/blockchain_backups`. Inside it you will create the file `blockchain.json` where you will paste the [GENESIS block data](https://gist.github.com/JoaoAJMatos/111dc0aeb10f784c9a8921cf474b2218) as JSON
 
 You can now interact with the service by sending http requests to the API. 
 
