@@ -2,7 +2,8 @@ const hexToBinary = require('hex-to-binary');
 const { GENESIS_DATA, MINE_RATE } = require('../config');
 const { cryptoHash } = require('../util');
 
-class Block {
+class Block { // TODO: implement the `height` concept: height = index of a block inside the blockchain
+              // TODO: try to implement an API endpoint to fetch a block by it's height
     constructor({ timestamp, lastHash, hash, data, nonce, difficulty }) {
         this.timestamp  = timestamp;
         this.lastHash   = lastHash;

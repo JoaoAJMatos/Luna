@@ -25,7 +25,7 @@ class Transaction {
             timestamp: Date.now(),
             amount   : senderWallet.balance,
             address  : senderWallet.publicKey,
-            signature: senderWallet.sign(outputMap)
+            signature: senderWallet.sign(outputMap).toHex()
         };
     }
 

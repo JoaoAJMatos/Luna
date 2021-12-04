@@ -1,17 +1,18 @@
 const Transaction = require('./transaction');
 const { STARTING_BALANCE } = require('../config');
-const { ec, cryptoHash } = require('../util');
+const { generateKeyPairFromSecret, cryptoHash, toHex } = require('../util');
 const uuid = require('uuid/v1');
 
 class Wallet {
     constructor() {
-        this.keyPair = ec.genKeyPair();
+        //this.keyPair = generateKeyPairFromSecret('e7b6cace3e688a4a7bb655865918b44890d9bf90bcd38b0f432739b8bd227bcacc2031836d5c83f532c4d5d97782885791bc4beeaf2f4c8d00435d759e8b1d32');
+        this.keyPair = generateKeyPairFromSecret(JSON.stringify(Math.random()));
 
         this.balance = STARTING_BALANCE;
 
-        this.id = uuid();
+        this.id = uuid(); // TODO: use the wallet ID to generate a secret in order to create the keyPair
 
-        this.publicKey = this.keyPair.getPublic().encode('hex');
+        this.publicKey = toHex(this.keyPair.getPublic());
     }
 
     sign(data) {

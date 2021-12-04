@@ -31,8 +31,11 @@ const TransactionPool  = require('./wallet/transaction-pool');
 const Wallet           = require('./wallet');
 const TransactionMiner = require('./app/transaction-miner');
 
+const { PATH, GENESIS_DATA }         = require('./config')
+const DB               = require('./util/db');
+
 const app              = express();
-const blockchain       = new Blockchain();
+const blockchain       = new Blockchain(); // TODO: try to initialize a new blockchain instance after fetching stored blocks
 const transactionPool  = new TransactionPool();
 const wallet           = new Wallet();
 const pubsub           = new PubSub({ blockchain, transactionPool });
@@ -45,7 +48,6 @@ const fs = require('fs'); // Import filesystem module
 const getLastModify = require('./util/get-last-modify');
 
 const clc = require('cli-color');
-
 
 app.use(bodyParser.json());
 
@@ -93,50 +95,55 @@ app.get('/api/transaction-pool-map', (req, res) => {        // [/api/transaction
     res.json(transactionPool.transactionMap);
 });
 
+
 // Mine transactions
 app.get('/api/mine-transactions', (req, res) => {       // [/api/mine-transactions] => mines every transaction contained inside the transaction pool
     transactionMiner.mineTransactions();
 
+    DB.write(PATH, blockchain.chain);
     res.redirect('/api/blocks');
 });
 
 // =====================
 
-// When started, the root node will look for the latest stored blockchain version inside the filesystem
+// When started, the node will look for the latest stored blockchain version inside the filesystem
 //  - If it finds one, validate the blocks inside it and replace the current state of the blockchain
-//  - If it doesn't find a blockchain file, the root node will wait for incoming connections in order to update it's blockchain state
+//  - If it doesn't find a blockchain file, the node will check if it is the root node. If it is: Initialize a new blockchain
 
 // =====================
-const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
+const fetchBlockchainJSON = (root) => { // Fetch blockchain JSON from file
     let blockchainJSON = [] // Define an empty array to put the blocks in as the `isValidChain` takes an array as argument
 
-    try{
-        if(fs.existsSync(PATH)) {
-            fs.readFile(PATH, 'utf8', (err, jsonString) => {
-                console.log(`\n[+] Found latest blockchain version in '${PATH}'.`);
-                console.log('     [+] Attempting to replace chain: \n');
+    try {
+        DB.read(PATH, (err, data) => {
+            
+            if (err) {
+                console.log(err);
+            }
+            else {
 
-                if(err) {
-                    console.error('\n[ERR] Unable to open file for reading')
-                    return;
+                if (data == 0) {
+                    // If the file is empty, check if I am root
+                    console.log(`[+] Failed to fetch latest blockchain instance from '${PATH}'. The file is empty.`);    // If I am root, initialize a new blockchain
+
+                    console.log(`[+] Initializing a new blockchain instance...`);
+                    DB.write(PATH, [GENESIS_DATA]);
+                    
                 }
+                else {
+                    console.log(`\n[+] Found latest blockchain version in '${PATH}'.\n`);
+                    console.log('     [+] Attempting to replace chain:');
 
-                if(jsonString.length = 0) { // Check iff the file is not empty
-                    console.log(`[+] Failed to fetch latest blockchain instance from '${PATH}'. The file is empty.`);
-                    return;
-
-                } else { // If the file is not empty, attempt to fetch the blockchain data and replace the current state of the chain
-
-                    blockchainJSON.push(JSON.parse(jsonString));
+                    blockchainJSON.push(data);
                     blockchain.replaceChain(blockchainJSON);
+
                     console.log(clc.blue(`     [+] Successfully updated the blockchain instance.`));
                     console.log(`\n[+] Instance retrieved from '${clc.blue(PATH)}'.\n[+] Last write: ${clc.yellow(getLastModify(PATH))}`);
                 }
-            });
-        } else {
-            console.error('\n[ERR] Blockchain file does not exist');
-        }
-    } catch{
+            }
+        });
+
+    } catch {
         console.error('\n[ERR] An error has occurred when fetching the last stored blockchain version');
     }
 }; 
@@ -146,12 +153,15 @@ const syncWithRootState = () => { // Sync chains & transaction pool on startup
         if (!error && res.statusCode === 200) {
             const rootChain = JSON.parse(body);
 
-            console.log('\n[+] Replacing chain on sync with', rootChain);
+            console.log('\n[+] Replacing chain on sync with [root-chain]');
             blockchain.replaceChain(rootChain);
         } else {
             console.log(`\n[${clc.bgRed("ERR")}] Error fetching the latest blockchain version from the root node (${clc.yellow("the node may be down")})`); 
             console.log('[+] Attempting to fetch latest stored blockchain version.')
-            fetchBlockchainJSON()
+            
+            let amIRoot = PORT == DEFAULT_PORT ? true : false; // Check if I am the root node 
+            
+            fetchBlockchainJSON(amIRoot);
         }
     });
 
@@ -183,8 +193,6 @@ if (process.env.GENERATE_PEER_PORT === 'true') { // Choose random port if defaul
 
 const PORT = PEER_PORT || DEFAULT_PORT; 
 
-const PATH = `./blockchains_backup/blockchain.json` // Path to blockchain file
-
 process.stdout.write('\033c'); // Clear screen
 console.log("======================================");
 console.log("|" + clc.blue("         LUNA v0.9.0-alpha          ") + "|");
@@ -207,7 +215,7 @@ app.listen(PORT, () => {
 
     console.log("======================================");
 
-    if (PORT !== DEFAULT_PORT) { // If I am peer node, sync the state with the root node
+    if (PORT !== DEFAULT_PORT) { // If I am a peer node, sync the state with the root node
         syncWithRootState();
     } else {
         // If I am the root node, fetch the latest blockchain version
