@@ -1,7 +1,7 @@
 # Luna
 A blockchain implementation with it's own cryptocurrency and a fully developed API (but in node.js because I can and I'm lazy)
 
-## Try Luna (0.8 Alpha)
+## Try Luna (0.9 Alpha)
 In order to run Luna and experiment with the service in it's early stages of development all you need to do is __clone__ the repo or [download](https://github.com/JoaoAJMatos/Luna/archive/refs/tags/0.7-alpha.zip) the latest stable release.
 
 > To clone the repo: `git clone https://github.com/JoaoAJMatos/Luna.git`
@@ -16,7 +16,7 @@ To run Luna, you can start up the root node by executing `npm run dev` (or `npm 
 
 #### Take into consideration:
 
-The root node will check for the latest blockchain instance inside the `/blockchain_backups/blockchain.json` file on start-up. This file is included in the gitignore, therefore you will have to add it yourself. Create the file by adding the following directory in the root folder of the project: `/blockchain_backups`. Inside it you will create the file `blockchain.json` where you will paste the [GENESIS block data](https://gist.github.com/JoaoAJMatos/111dc0aeb10f784c9a8921cf474b2218) as JSON
+The root node will check for the latest blockchain instance inside the `/blockchains_backup/blockchain.json` file on start-up. This file is included in the gitignore, therefore you will have to add it yourself. Create the file by adding the following directory in the root folder of the project: `/blockchain_backups`. Inside it you will create the file `blockchain.json` where you will paste the [GENESIS block data](https://gist.github.com/JoaoAJMatos/111dc0aeb10f784c9a8921cf474b2218) as JSON
 
 You can now interact with the service by sending http requests to the API. 
 
