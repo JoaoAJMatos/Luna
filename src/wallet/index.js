@@ -1,5 +1,5 @@
 const Transaction = require('./transaction');
-const { STARTING_BALANCE } = require('../config');
+const { STARTING_BALANCE } = require('../../config');
 const { generateKeyPairFromSecret, cryptoHash, toHex } = require('../util');
 const uuid = require('uuid/v1');
 

@@ -2,7 +2,7 @@ const Block = require('./block');
 const Transaction = require('../wallet/transaction');
 const Wallet = require('../wallet');
 const { cryptoHash } = require('../util');
-const { REWARD_INPUT, MINING_REWARD } = require('../config');
+const { REWARD_INPUT, MINING_REWARD } = require('../../config');
 const backupChain = require(`${process.env.APPDATA}/lunaBlockchain.json`)
 
 class Blockchain {

@@ -25,14 +25,14 @@
 const bodyParser       = require('body-parser');
 const express          = require('express');
 const request          = require('request');
-const Blockchain       = require('./blockchain');
-const PubSub           = require('./app/pubsub');
-const TransactionPool  = require('./wallet/transaction-pool');
-const Wallet           = require('./wallet');
-const TransactionMiner = require('./app/transaction-miner');
+const Blockchain       = require('./src/blockchain');
+const PubSub           = require('./src/app/pubsub');
+const TransactionPool  = require('./src/wallet/transaction-pool');
+const Wallet           = require('./src/wallet');
+const TransactionMiner = require('./src/app/transaction-miner');
 
 const { PATH, GENESIS_DATA }         = require('./config')
-const DB               = require('./util/db');
+const DB               = require('./src/util/db');
 
 const app              = express();
 const blockchain       = new Blockchain(); // TODO: try to initialize a new blockchain instance after fetching stored blocks
@@ -45,7 +45,7 @@ const DEFAULT_PORT      = 3000;
 const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`
 
 const fs = require('fs'); // Import filesystem module
-const getLastModify = require('./util/get-last-modify');
+const getLastModify = require('./src/util/get-last-modify');
 
 const clc = require('cli-color');
 
