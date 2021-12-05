@@ -33,7 +33,7 @@ const TransactionPool  = require('./src/wallet/transaction-pool');
 const Wallet           = require('./src/wallet');
 const TransactionMiner = require('./src/app/transaction-miner');
 
-const { PATH, GENESIS_DATA }         = require('./config')
+const { PATH, PATH_LINUX, GENESIS_DATA }         = require('./config')
 const DB               = require('./src/util/db');
 
 const app              = express();
@@ -117,12 +117,21 @@ app.get('/api/transaction-pool-map', (req, res) => {        // [/api/transaction
     res.json(transactionPool.transactionMap);
 });
 
+// Check for the host OS and assign a path to the file depending on the OS
+const hostOS = process.platform;
+let path;
+
+if (hostOS == "win32") {
+    path = PATH;
+} else if (hostOS == "linux") {
+    path = PATH_LINUX;
+}
 
 // Mine transactions
 app.get('/api/mine-transactions', (req, res) => {       // [/api/mine-transactions] => mines every transaction contained inside the transaction pool
     transactionMiner.mineTransactions();
 
-    DB.write(PATH, blockchain.chain);
+    DB.write(path, blockchain.chain);
     res.redirect('/api/blocks');
 });
 
@@ -133,11 +142,12 @@ app.get('/api/mine-transactions', (req, res) => {       // [/api/mine-transactio
 //  - If it doesn't find a blockchain file, the node will check if it is the root node. If it is: Initialize a new blockchain
 
 // =====================
-const fetchBlockchainJSON = (root) => { // Fetch blockchain JSON from file
+
+const fetchBlockchainJSON = () => { // Fetch blockchain JSON from file
     let blockchainJSON = [] // Define an empty array to put the blocks in as the `isValidChain` takes an array as argument
 
     try {
-        DB.read(PATH, (err, data) => {
+        DB.read(path, (err, data) => {
             
             if (err) {
                 console.log(err);
@@ -149,7 +159,7 @@ const fetchBlockchainJSON = (root) => { // Fetch blockchain JSON from file
                     console.log(`[+] Failed to fetch latest blockchain instance from '${PATH}'. The file is empty.`);    // If I am root, initialize a new blockchain
 
                     console.log(`[+] Initializing a new blockchain instance...`);
-                    DB.write(PATH, [GENESIS_DATA]);
+                    DB.write(path, [GENESIS_DATA]);
                     
                 }
                 else {
@@ -181,9 +191,7 @@ const syncWithRootState = () => { // Sync chains & transaction pool on startup
             console.log(`\n[${clc.bgRed("ERR")}] Error fetching the latest blockchain version from the root node (${clc.yellow("the node may be down")})`); 
             console.log('[+] Attempting to fetch latest stored blockchain version.')
             
-            let amIRoot = PORT == DEFAULT_PORT ? true : false; // Check if I am the root node 
-            
-            fetchBlockchainJSON(amIRoot);
+            fetchBlockchainJSON();
         }
     });
 

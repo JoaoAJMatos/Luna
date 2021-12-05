@@ -20,4 +20,6 @@ module.exports = {
     MINING_REWARD: 2, // TODO: See if my advanced chimp brain can implement a decreasing mining reward type of thingy
 
     PATH: `${process.env.APPDATA}/lunaBlockchain.json`, // Path to blockchain file
+
+    PATH_LINUX: `~/.config/lunaBlockchain.json` // Path to blockchain file on Linux
 };
