@@ -2,38 +2,40 @@ const hexToBinary = require('hex-to-binary');
 const { GENESIS_DATA, MINE_RATE } = require('../../config');
 const { cryptoHash } = require('../util');
 
-class Block { // TODO: implement the `height` concept: height = index of a block inside the blockchain
-              // TODO: try to implement an API endpoint to fetch a block by it's height
-    constructor({ timestamp, lastHash, hash, data, nonce, difficulty }) {
+class Block { 
+    // TODO: Refactor the block structure. Fields in the order [data, nonce, difficulty]. (OCD is calling)
+    constructor({ timestamp, height, lastHash, hash, data, nonce, difficulty }) {
         this.timestamp  = timestamp;
+        this.height     = height;
         this.lastHash   = lastHash;
         this.hash       = hash;
-        this.data       = data;
-        this.nonce      = nonce;
         this.difficulty = difficulty;
+        this.nonce      = nonce;
+        this.data       = data;
     }
 
     static genesis() {
         return new this(GENESIS_DATA);
     }
 
-    static mineBlock({ lastBlock, data }) {
-        let hash, timestamp;
+    static mineBlock({ lastBlock, data }, lastHeight) {
+        let hash, timestamp, height;
         const lastHash     = lastBlock.hash;
         let { difficulty } = lastBlock;
         let nonce = 0;
+
+        height = lastHeight + 1;
 
         do { // Proof of work
 
             nonce++;
             timestamp = Date.now();
             difficulty = Block.adjustDifficulty({ originalBlock: lastBlock, timestamp });
-            hash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
-            //console.log(hash);
+            hash = cryptoHash(timestamp, height, lastHash, data, nonce, difficulty);
 
         } while (hexToBinary(hash).substring(0, difficulty) !== '0'.repeat(difficulty));
-        
-        return new this({ timestamp, lastHash, data, difficulty, nonce, hash });
+
+        return new this({ timestamp, height, lastHash, data, difficulty, nonce, hash });
     }
 
     static adjustDifficulty({ originalBlock, timestamp }) {

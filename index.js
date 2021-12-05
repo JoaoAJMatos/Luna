@@ -35,7 +35,7 @@ const { PATH, GENESIS_DATA }         = require('./config')
 const DB               = require('./src/util/db');
 
 const app              = express();
-const blockchain       = new Blockchain(); // TODO: try to initialize a new blockchain instance after fetching stored blocks
+const blockchain       = new Blockchain();
 const transactionPool  = new TransactionPool();
 const wallet           = new Wallet();
 const pubsub           = new PubSub({ blockchain, transactionPool });
@@ -54,6 +54,11 @@ app.use(bodyParser.json());
 // Returns the blockchain data as JSON
 app.get('/api/blocks', (req, res) => {      // [/api/blocks]
     res.json(blockchain.chain);             // Shows te current state of the blockchain
+});
+
+// Returns the block at a specific index in the chain
+app.get('/api/block/index', (req, res) => {
+    res.json(blockchain.chain[req.query.index]);
 });
 
 // Mine blocks in the transaction pool

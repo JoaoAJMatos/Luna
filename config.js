@@ -3,11 +3,12 @@ const INITIAL_DIFFICULTY = 10;
 module.exports = {
     GENESIS_DATA: {
         timestamp  : 1632567704,
+        height     : 0,
         lastHash   : '970ec274ca867815174ebe4eff19282000f9495a6c7254e94991d1fb4dc3df30',
         hash       : 'todo-hash',
-        difficulty : INITIAL_DIFFICULTY,
+        data       : [],
         nonce      : 0,
-        data       : []
+        difficulty : INITIAL_DIFFICULTY
     },
 
     MINE_RATE: 10000,

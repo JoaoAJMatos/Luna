@@ -11,10 +11,12 @@ class Blockchain {
     }
 
     addBlock({ data }) {
+        console.log(this.chain.length);
         const newBlock = Block.mineBlock({
             lastBlock: this.chain[this.chain.length - 1],
-            data
-        });
+            data: data
+             
+        }, this.chain.length - 1);
 
         this.chain.push(newBlock);
     }
@@ -91,20 +93,36 @@ class Blockchain {
 
     // Validate the chain contents - returns true/false
     static isValidChain(chain) {
+        
         if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis())) return false;
         
         for (let i=1; i<chain.length; i++) {
-            const { timestamp, lastHash, hash, nonce, difficulty, data }  = chain[i];
+            const { timestamp, height, lastHash, hash, nonce, difficulty, data }  = chain[i];
             const actualLastHash = chain[i-1].hash;
             const lastDifficulty = chain[i-1].difficulty;
+            const lastHeight     = chain[i-1].height;
 
-            if (lastHash !== actualLastHash) return false;
+            if (lastHash !== actualLastHash) {
+                console.error(`[-] Incoming lastHash does not match expected lastHash. Got :'${lastHash}', Expected: '${actualLastHash}'`);
+                return false;
+            } 
 
-            const validatedHash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
+            if (height !== lastHeight + 1) {
+                console.error(`[-] Incoming height is incorrect. Got: '${height}', Expected: '${lastHeight + 1}'`);
+                return false;
+            }
 
-            if (hash !== validatedHash) return false;
+            const validatedHash = cryptoHash(timestamp, height, lastHash, data, nonce, difficulty);
 
-            if (Math.abs(lastDifficulty - difficulty) > 1) return false; // Prevent difficulty jumps
+            if (hash !== validatedHash) {
+                console.error(`[-] Incoming hash does not match expected hash. Got: '${hash}', Expected: '${validatedHash}'`)
+                return false;
+            } 
+
+            if (Math.abs(lastDifficulty - difficulty) > 1) {
+                console.error(`[-] A difficulty jump higher than '1' has occurred`)
+                return false; // Prevent difficulty jumps
+            } 
         }
 
         return true;
