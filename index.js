@@ -22,6 +22,8 @@
 * SOFTWARE.                                                                        *
 ***********************************************************************************/ 
 
+// TODO: implement a node.js miner instead of a python thingy (python sucks)
+
 const bodyParser       = require('body-parser');
 const express          = require('express');
 const request          = require('request');
@@ -59,6 +61,21 @@ app.get('/api/blocks', (req, res) => {      // [/api/blocks]
 // Returns the block at a specific index in the chain
 app.get('/api/block/index', (req, res) => {
     res.json(blockchain.chain[req.query.index]);
+});
+
+app.get('/api/block/hash', (req, res) => {                                          // [/api/blocks]
+    console.log(req.query.hash);                                                    // Return block with specified hash field
+    const queryHash = req.query.hash;                                               // Takes one query parameter [hash]
+                                                                                    // If the hash to find is '123' the query parameter must be 123
+    // Loop through the chain until a block with the specified hash field is found  // 
+    for (let i = 0; i < blockchain.chain.length; i++) {                             // Example request:
+        let block = blockchain.chain[i];                                            // http://localhost:3000/api/block/hash?hash=todo-hash (gets the genesis block)
+
+        if (block.hash == queryHash) { 
+            res.json(block);
+            break;
+        }
+    }
 });
 
 // Mine blocks in the transaction pool
