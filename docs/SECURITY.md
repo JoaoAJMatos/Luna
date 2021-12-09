@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Currently up-to-date version of the project: `0.8 Alpha`
+Currently up-to-date version of the project: `0.9 Alpha`
 
 Supported releases:
 
@@ -10,6 +10,7 @@ Supported releases:
 | ------- | :----------------: |
 | 0.7 Alpha   | :white_check_mark: |
 | 0.8 Alpha   | :white_check_mark: |
+| 0.9 Alpha   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
