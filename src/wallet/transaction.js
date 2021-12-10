@@ -25,7 +25,7 @@ class Transaction {
             timestamp: Date.now(),
             amount   : senderWallet.balance,
             address  : senderWallet.publicKey,
-            signature: senderWallet.sign(outputMap).toHex()
+            signature: senderWallet.sign(outputMap).toHex() // TODO: try to lowercase signature to see if I can fix the `rec chain is not valid` bug
         };
     }
 
